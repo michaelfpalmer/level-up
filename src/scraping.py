@@ -9,9 +9,10 @@ browser = webdriver.Chrome()
 browser.get('http://seleniumhq.org/')
 
 css_mappings = {'job_title': 'h1.jobTitle.h2.strong',
-        'job_description': 'div.jobDescriptionContent.desc',
-        'stars': 'span.compactRating.lg.margRtSm',
-        'salary_range': 'span.green.small.salary'}
+            'job_description': 'div.jobDescriptionContent.desc',
+            'company': 'a.plain.strong.empDetailsLink',
+            'stars': 'span.compactRating.lg.margRtSm',
+            'salary_range': 'span.green.small.salary'}
 
 def get_element_from_selector(browser, css_key, css_value):
     try:
@@ -40,6 +41,24 @@ def scrape_ds():
         attributes[k] = []
     for i in range(1,31):
         dsurl = 'https://www.glassdoor.com/Job/seattle-data-scientist-jobs-SRCH_IL.0,7_IC1150505_KO8,22_IP' + str(i) + '.htm'
+        browser.get(dsurl)
+        attributes=get_page_of_attributes(css_mappings, browser, attributes)
+        ds=pd.DataFrame(attributes)
+        ds.to_csv('ds_'+str(i)+'.csv', sep='|')
+    return ds
+
+def scrape_glassdoor_url(base_url, url_filters):
+    '''
+    base url example
+    https://www.glassdoor.com/Job/seattle-data-scientist-jobs-SRCH_IL.0,7_IC1150505_KO8,22_IP
+    url filters example
+    .htm?minSalary=18000
+    '''
+    attributes = {}
+    for k,v in css_dict.items():
+        attributes[k] = []
+    for i in range(1,31):
+        dsurl = base_url + str(i) + 'url_filters'
         browser.get(dsurl)
         attributes=get_page_of_attributes(css_mappings, browser, attributes)
         ds=pd.DataFrame(attributes)
