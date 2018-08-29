@@ -1,4 +1,6 @@
 import pandas as pd
+blacklisted_occupations = ['physician', 'dentist', 'psychiatrist', 'pediatrician', 'oncologist', 'crna', 'surgeon', 'anesthesiologist', 'neurologist', 'hospitalist']
+
 def filter_jobs_with_salaries(df,salary_col):
     #must have salary range
     tempdf=df[df[salary_col].notnull()]
