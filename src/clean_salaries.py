@@ -7,15 +7,15 @@ def filter_jobs_with_salaries(df,salary_col):
     tempdf[salary_col] = tempdf[salary_col].str.lower()
     #must not be hourly, shortcut look for 'K'
     tempdf=tempdf[tempdf[salary_col].str.find('k')>0]
-    tempdf=tempdf[tempdf[salary_col].str.find('Employer Provided Salary:')<0]
+    tempdf=tempdf[tempdf[salary_col].str.find('employer provided salary:')<0]
     return tempdf
 def create_salaries_cols(df,salary_col):
     '''
     parses salary range column, removes formatting, and splits to upper, lower bounds, and salary estimate type
     returns dataframe with cleansed salary format
     '''
-    tempdf = df['salary_range'].str.replace('$','')
-    tempdf = tempdf[salary_col].str.split('k', expand=True)
+    tempdf = df[salary_col].str.replace('$','')
+    tempdf = tempdf.str.split('k', expand=True)
     tempdf.columns = ['salary_lower','salary_upper','salary_estimator']
     tempdf['salary_upper'] = tempdf['salary_upper'].str.replace('-','')
     numeric_cols = ['salary_lower','salary_upper']
