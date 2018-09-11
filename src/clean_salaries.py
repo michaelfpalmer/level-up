@@ -25,10 +25,10 @@ def create_salaries_cols(df,salary_col):
     return df
 
 def convert_salaries_hourly(df,salary_col):
-    hourly=df[df['salary_range'].str.lower().str.find('per hour')>0]['salary_range']
-    hourly=hourly.str.replace('Employer Provided Salary:','')
-    hourly=hourly.str.replace('Per Hour','')
-    hourly=hourly.str.replace("Glassdoor Est.",'')
+    hourly=df[df[salary_col].str.lower().str.find('per hour')>0][salary_col]
+    hourly=hourly.str.replace('employer provided Salary:','')
+    hourly=hourly.str.replace('per hour','')
+    hourly=hourly.str.replace("glassdoor Est.",'')
     hourly=hourly.str.replace("\(\)","")
     hourly=hourly.str.replace('$','')
     hourly=hourly.str.split('-',expand=True)
