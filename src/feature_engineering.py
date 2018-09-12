@@ -99,7 +99,7 @@ education = ['bachelor''s', 'master''s', 'doctoral',
     'doctorate', 'ms', 'advanced degree', 'phd']
 data_engineering = ['sql', 'etl', 'data warehousing',
     'data warehouse', 'distributed systems', 'dynamodb',
-    'mongodb', 'engineering', 'nosql', 'oracle', 'json',
+    'mongodb', 'nosql', 'oracle', 'json',
     'postgresql', 'pig', 'pyspark', 'scala', 'spark',
     'data wrangler', 'hive', 'hadoop','mysql', 'big data',
     'teradata', 'cassandra', 'networking', 'ansible', 'ci',
@@ -118,14 +118,17 @@ miscellaneous = ['genetics', 'biotechnology',
     'inventory model', 'image processing',
     'signal processing', 'supply chain experience',
     'customer lifetime value', 'laboratory experience',
-    'product ranking', 'trials']
+    'product ranking', 'trials', 'engineering']
 
 def get_occupation_bool_index(occupation, cleaned_df):
     '''returns boolean indexes of the cleaned_df filtering out this specific occupation'''
     return (cleaned_df['job_title'].str.lower().str.find(occupation)>=0)
 def exclude_blacklisted_occupations(blacklisted_occupations, cleaned_df):
+    '''
+    takes in a dataframe of cleaned job postings
+    removes job postings that have occupations in a blacklist
+    '''
     index = get_occupation_bool_index(blacklisted_occupations[0],cleaned_df)
     for occupation in blacklisted_occupations[1:]:
-        print("Peter was Here")
         index = (index)|(get_occupation_bool_index(occupation, cleaned_df))
     return cleaned_df[~index]
